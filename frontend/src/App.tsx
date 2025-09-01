@@ -33,14 +33,14 @@ function App() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
         <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">VeloCollab MVP</h1>
-        
+
         {loading && (
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
             <p className="text-gray-600">Connecting to API...</p>
           </div>
         )}
-        
+
         {error && (
           <div className="text-red-600 bg-red-100 p-4 rounded border border-red-300">
             <h3 className="font-bold mb-2">❌ Connection Error</h3>
@@ -50,7 +50,7 @@ function App() {
             </p>
           </div>
         )}
-        
+
         {apiStatus && (
           <div className="text-green-600 bg-green-100 p-4 rounded border border-green-300">
             <h3 className="font-bold mb-2">✅ API Connected</h3>

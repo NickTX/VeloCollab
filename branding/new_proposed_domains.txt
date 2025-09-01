@@ -3,10 +3,10 @@ Based on Hevy Requirements & Avoiding All Taken Domains
 =====================================================
 
 KEY THEMES FROM REQUIREMENTS ANALYSIS:
-- Athletic Performance (speed, power, plyometrics)  
+- Athletic Performance (speed, power, plyometrics)
 - Periodization & Training Intelligence
 - Comprehensive Analytics & 1RM Tracking
-- Speed Training & Sprint Analytics  
+- Speed Training & Sprint Analytics
 - Community & Social Features
 - Multi-Sport Support (lifting, running, jumping)
 

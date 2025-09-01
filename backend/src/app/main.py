@@ -1,6 +1,7 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import os
 
 app = FastAPI(title="VeloCollab API", version="1.0.0")
 
@@ -29,5 +30,5 @@ async def api_status():
     return {
         "api": "VeloCollab",
         "version": "1.0.0",
-        "environment": os.getenv("ENVIRONMENT", "development")
+        "environment": os.getenv("ENVIRONMENT", "development"),
     }

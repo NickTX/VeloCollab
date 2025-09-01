@@ -219,7 +219,7 @@ class Settings(BaseSettings):
     app_name: str = "VeloCollab"
     debug: bool = True
     allowed_origins: List[str] = ["http://localhost:3000"]
-    
+
     class Config:
         env_file = ".env"
 
@@ -273,15 +273,15 @@ function App() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">VeloCollab MVP</h1>
-        
+
         {loading && <p className="text-gray-600">Connecting to API...</p>}
-        
+
         {error && (
           <div className="text-red-600 bg-red-100 p-4 rounded">
             {error}
           </div>
         )}
-        
+
         {apiStatus && (
           <div className="text-green-600 bg-green-100 p-4 rounded">
             <p>✅ Connected to {apiStatus.api}</p>

@@ -2,8 +2,8 @@
 
 ## 1. Project Overview
 
-**Project Name:** VeloCollab  
-**Domain:** velocollab.com  
+**Project Name:** VeloCollab
+**Domain:** velocollab.com
 **Purpose:** A web-based fitness platform for workout tracking, progress analytics, and community collaboration.
 
 ### Core Priorities
@@ -138,23 +138,23 @@ class Settings(BaseSettings):
     # App
     app_name: str = "VeloCollab"
     debug: bool = False
-    
+
     # Database
     database_url: str = "sqlite:///./velocollab.db"
-    
+
     # Authentication
     google_client_id: str
     google_client_secret: str
     secret_key: str
     access_token_expire_minutes: int = 30
-    
+
     # CORS
     allowed_origins: list[str] = ["http://localhost:3000"]
-    
+
     # Optional (for future)
     redis_url: Optional[str] = None
     stripe_secret_key: Optional[str] = None
-    
+
     class Config:
         env_file = ".env"
 
@@ -210,11 +210,11 @@ def generate_qr_code(user_email: str, secret: str) -> str:
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
     qr.add_data(totp_uri)
     qr.make(fit=True)
-    
+
     img = qr.make_image(fill_color="black", back_color="white")
     buffer = BytesIO()
     img.save(buffer, format="PNG")
-    
+
     return base64.b64encode(buffer.getvalue()).decode()
 
 def verify_totp(secret: str, token: str) -> bool:
@@ -260,7 +260,7 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = "users"
-    
+
     id = Column(String, primary_key=True)  # Google user ID
     email = Column(String, unique=True, nullable=False)
     name = Column(String, nullable=False)
@@ -268,26 +268,26 @@ class User(Base):
     totp_secret = Column(String)  # For MFA
     created_at = Column(DateTime, default=datetime.utcnow)
     is_active = Column(Boolean, default=True)
-    
+
     # Relationships
     workouts = relationship("Workout", back_populates="user")
 
 class Workout(Base):
     __tablename__ = "workouts"
-    
+
     id = Column(Integer, primary_key=True)
     user_id = Column(String, ForeignKey("users.id"))
     name = Column(String, nullable=False)
     notes = Column(Text)
     started_at = Column(DateTime, default=datetime.utcnow)
     completed_at = Column(DateTime)
-    
+
     user = relationship("User", back_populates="workouts")
     exercises = relationship("WorkoutExercise", back_populates="workout")
 
 class Exercise(Base):
     __tablename__ = "exercises"
-    
+
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     category = Column(String)  # strength, cardio, plyometric
@@ -296,12 +296,12 @@ class Exercise(Base):
 
 class WorkoutExercise(Base):
     __tablename__ = "workout_exercises"
-    
+
     id = Column(Integer, primary_key=True)
     workout_id = Column(Integer, ForeignKey("workouts.id"))
     exercise_id = Column(Integer, ForeignKey("exercises.id"))
     sets_data = Column(Text)  # JSON string with sets/reps/weight
-    
+
     workout = relationship("Workout", back_populates="exercises")
     exercise = relationship("Exercise")
 ```
@@ -320,26 +320,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: 3.11
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
+
     - name: Run ruff
       run: ruff check src/ tests/
-    
+
     - name: Run black
       run: black --check src/ tests/
-    
+
     - name: Run tests
       run: pytest tests/ --cov=src
-    
+
     - name: Security check
       run: |
         pip install bandit
@@ -452,7 +452,7 @@ async def ready():
 This simplified specification:
 - ✅ **Reduces complexity** by 60% while keeping all essential features
 - ✅ **Follows best practices** with clear separation of concerns
-- ✅ **Maintains security** with external auth and stateless sessions  
+- ✅ **Maintains security** with external auth and stateless sessions
 - ✅ **Stays Kubernetes-ready** without over-engineering
 - ✅ **Enables rapid iteration** with simple initial structure
 - ✅ **Provides clear next steps** with specific questions to answer

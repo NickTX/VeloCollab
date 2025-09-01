@@ -31,6 +31,12 @@ FastAPI-based backend for the VeloCollab fitness tracking application.
    ruff check src tests
    ```
 
+6. **Pre-commit hooks (optional but recommended):**
+   ```bash
+   pre-commit install  # Install hooks
+   pre-commit run --all-files  # Run on all files
+   ```
+
 ## API Endpoints
 
 - `GET /` - Root endpoint

@@ -3,7 +3,7 @@ BRAND NAME PROPOSALS FOR WORKOUT TRACKER PLATFORM
 
 SCORING FRAMEWORK (10 points total):
 - Memorability (3pts): +1 short length, +1 alliteration/rhyme, +1 euphony
-- Ease of Use (3pts): +1 simple spelling, +1 easy pronunciation, +1 compound/blend structure  
+- Ease of Use (3pts): +1 simple spelling, +1 easy pronunciation, +1 compound/blend structure
 - Strategic Fit (2pts): +1 relevance/positive connotation, +1 versatility
 - Practicality (2pts): +1 uniqueness/availability potential, +1 emotional resonance
 
@@ -15,7 +15,7 @@ SCORING FRAMEWORK (10 points total):
    Strategic Fit: 2/2 (fitness relevant, versatile)
    Practicality: 0/2 (likely taken, common concept)
 
-2. RepRise - 9/10  
+2. RepRise - 9/10
    Memorability: 3/3 (short, alliterative, catchy)
    Ease of Use: 2/3 (simple, pronounceable, missing compound bonus)
    Strategic Fit: 2/2 (workout relevant, versatile)
@@ -764,7 +764,7 @@ TIER 3 (7 points):
 SUMMARY:
 Total names generated: 120+
 Names scoring 7+: 85+ options
-Names scoring 8+: 45+ options  
+Names scoring 8+: 45+ options
 Names scoring 9+: 6 top-tier options
 
 Next steps: Clean domain list creation and availability checking.
