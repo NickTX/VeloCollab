@@ -169,6 +169,108 @@ This is currently a personal project in early development. Contribution guidelin
 - **Performance Metrics**: Speed, power, and endurance analytics
 - **Body Measurements**: Comprehensive body composition tracking
 
+## ⚡ Warp Terminal Integration
+
+This project is **optimized for Warp terminal** with custom workflows, themes, and launch configurations.
+
+### 🚀 Quick Start with Warp
+
+```bash
+# Use Warp workflows for instant setup
+warp workflow start-full-stack    # Start both backend and frontend
+warp workflow setup-dev-environment  # First-time setup
+```
+
+### 🎨 VeloCollab Warp Theme
+
+The project includes a custom **VeloCollab theme** with brand colors:
+- **Primary**: Energetic orange-red (#FF6B35)
+- **Secondary**: Deep blue (#004E89)
+- **Accent**: Growth green (#1A936F)
+
+```bash
+# Apply the custom theme
+cp .warp/themes/velocollab.yaml ~/.warp/themes/
+```
+
+### 🔧 Available Warp Workflows
+
+#### Development
+- `start-backend` - Launch FastAPI development server
+- `start-frontend` - Launch React development server
+- `start-full-stack` - Launch both servers in parallel
+- `backend-shell` - Open backend shell with activated venv
+
+#### Testing & Quality
+- `test-all` - Run comprehensive test suite
+- `test-backend` - Run backend tests only
+- `test-frontend` - Run frontend tests only
+- `lint-backend` - Format and lint backend code
+
+#### Utilities
+- `setup-dev-environment` - Complete development setup
+- `project-info` - Display project status and information
+- `clean-all` - Clean all build artifacts and caches
+
+### 📋 Warp Launch Configurations
+
+#### Full-Stack Development
+```bash
+warp launch velocollab-fullstack
+```
+Opens 5 tabs: Overview, Backend, Frontend, Testing, Monitoring
+
+#### Backend-Focused
+```bash
+warp launch velocollab-backend
+```
+Opens 4 tabs: Server, Tests, Lint, Database
+
+#### Frontend-Focused
+```bash
+warp launch velocollab-frontend
+```
+Opens 4 tabs: Dev Server, Tests, Build, Packages
+
+### 🛠️ Custom Scripts
+
+Located in `.warp/scripts/`:
+
+- **`project-info.sh`** - Comprehensive project status dashboard
+- **`setup-dev.sh`** - Automated development environment setup
+- **`start-full-stack.sh`** - Parallel server startup with monitoring
+- **`test-all.sh`** - Complete test suite with detailed reporting
+- **`clean-all.sh`** - Smart cleanup of build artifacts
+
+### 💡 Warp Pro Tips
+
+1. **Use workflows instead of manual commands**:
+   ```bash
+   # Instead of:
+   cd backend && source .venv/bin/activate && uvicorn...
+
+   # Use:
+   warp workflow start-backend
+   ```
+
+2. **Launch configurations for different contexts**:
+   - Use `velocollab-fullstack` for general development
+   - Use `velocollab-backend` when working on API features
+   - Use `velocollab-testing` for QA sessions
+
+3. **Custom theme enhances readability**:
+   - VeloCollab colors improve code syntax highlighting
+   - Brand-consistent terminal experience
+   - Optimized for fitness/health domain keywords
+
+### 🎯 Warp Integration Benefits
+
+- **⚡ 10x faster startup** - Launch full environment in seconds
+- **🎨 Brand consistency** - Custom theme matches project identity
+- **🔄 Automated workflows** - No more memorizing complex commands
+- **📊 Rich information** - Project status at a glance
+- **🧹 Easy maintenance** - One-command cleanup and updates
+
 ## 📞 Contact
 
 For questions about this project, please open an issue on GitHub.

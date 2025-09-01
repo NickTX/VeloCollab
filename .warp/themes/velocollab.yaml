@@ -1,0 +1,103 @@
+---
+# VeloCollab Custom Warp Theme
+# "Where Speed Meets Community" - Fitness platform brand colors
+
+name: "VeloCollab"
+author: "VeloCollab Team"
+description: "Custom theme for VeloCollab fitness platform development"
+
+# Color palette inspired by fitness, speed, and community
+colors:
+  # Primary colors
+  primary: "#FF6B35"        # Energetic orange-red (velocity)
+  secondary: "#004E89"      # Deep blue (trust, stability)
+  accent: "#1A936F"         # Green (growth, health)
+
+  # Background colors
+  background: "#0A0E1A"     # Dark navy (professional)
+  surface: "#1E2330"        # Slightly lighter for panels
+  surface_variant: "#2A3441" # Cards and elevated surfaces
+
+  # Text colors
+  on_background: "#E8F4F8"  # Light blue-white
+  on_surface: "#C9D6DF"     # Muted light blue
+  on_primary: "#FFFFFF"     # Pure white on primary
+
+  # Status colors
+  success: "#1A936F"        # Green for success
+  warning: "#FFB627"        # Amber for warnings
+  error: "#D32F2F"          # Red for errors
+  info: "#0288D1"           # Blue for info
+
+# Terminal colors
+terminal:
+  # Standard colors
+  black: "#0A0E1A"
+  red: "#FF4444"
+  green: "#1A936F"
+  yellow: "#FFB627"
+  blue: "#004E89"
+  magenta: "#9C27B0"
+  cyan: "#00ACC1"
+  white: "#E8F4F8"
+
+  # Bright variants
+  bright_black: "#2A3441"
+  bright_red: "#FF6B6B"
+  bright_green: "#4CAF50"
+  bright_yellow: "#FFD54F"
+  bright_blue: "#2196F3"
+  bright_magenta: "#E91E63"
+  bright_cyan: "#26C6DA"
+  bright_white: "#FFFFFF"
+
+# UI elements
+ui:
+  # Cursor
+  cursor_color: "#FF6B35"
+  cursor_text_color: "#FFFFFF"
+
+  # Selection
+  selection_background: "#FF6B3520"
+  selection_foreground: "#FFFFFF"
+
+  # Scrollbar
+  scrollbar_thumb: "#FF6B35"
+  scrollbar_track: "#2A3441"
+
+  # Borders
+  border_color: "#FF6B35"
+  border_focus_color: "#FF6B35"
+
+  # Tabs
+  tab_active_background: "#FF6B35"
+  tab_active_foreground: "#FFFFFF"
+  tab_inactive_background: "#2A3441"
+  tab_inactive_foreground: "#C9D6DF"
+
+# Syntax highlighting
+syntax:
+  comment: "#6C757D"
+  keyword: "#FF6B35"
+  string: "#1A936F"
+  number: "#FFB627"
+  function: "#004E89"
+  variable: "#E8F4F8"
+  type: "#9C27B0"
+  constant: "#D32F2F"
+  operator: "#FF6B35"
+  punctuation: "#C9D6DF"
+
+# Git colors
+git:
+  added: "#1A936F"
+  modified: "#FFB627"
+  deleted: "#D32F2F"
+  untracked: "#6C757D"
+  staged: "#004E89"
+
+# Additional theme metadata
+metadata:
+  fitness_inspired: true
+  optimized_for: ["Python", "JavaScript", "TypeScript", "JSON", "YAML"]
+  best_used_with: ["FastAPI", "React", "fitness applications"]

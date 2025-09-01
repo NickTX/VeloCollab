@@ -1,0 +1,164 @@
+---
+# VeloCollab Warp Launch Configurations
+# Quick launch setups for different development scenarios
+
+launch_configurations:
+  # Full-stack development setup
+  - name: "velocollab-fullstack"
+    description: "🌟 Complete VeloCollab development environment"
+    theme: "velocollab"
+    working_directory: "/Users/NGolde/workspace/NickTX/VeloCollab"
+    tabs:
+      - name: "📋 Overview"
+        command: "clear && .warp/scripts/project-info.sh"
+        description: "Project overview and status"
+
+      - name: "🚀 Backend"
+        command: "cd backend && source .venv/bin/activate"
+        description: "FastAPI backend development"
+        working_directory: "/Users/NGolde/workspace/NickTX/VeloCollab/backend"
+
+      - name: "⚡ Frontend"
+        command: "cd frontend"
+        description: "React TypeScript frontend"
+        working_directory: "/Users/NGolde/workspace/NickTX/VeloCollab/frontend"
+
+      - name: "🧪 Testing"
+        command: "echo '🧪 Ready for testing - use workflows for test commands'"
+        description: "Testing environment"
+
+      - name: "📊 Monitoring"
+        command: "echo '📊 Monitoring tab - check logs and health status here'"
+        description: "Application monitoring"
+
+  # Backend-focused development
+  - name: "velocollab-backend"
+    description: "🐍 Backend development focused setup"
+    theme: "velocollab"
+    working_directory: "/Users/NGolde/workspace/NickTX/VeloCollab/backend"
+    tabs:
+      - name: "🚀 Server"
+        command: "source .venv/bin/activate && uvicorn src.app.main:app --reload --host 127.0.0.1 --port 8000"
+        description: "FastAPI development server"
+
+      - name: "🧪 Tests"
+        command: "source .venv/bin/activate && echo 'Ready to run: pytest tests -v'"
+        description: "Backend testing"
+
+      - name: "🔍 Lint"
+        command: "source .venv/bin/activate && echo 'Ready to run: black src tests && ruff check src tests'"
+        description: "Code formatting and linting"
+
+      - name: "📊 DB"
+        command: "source .venv/bin/activate && echo 'Database operations ready'"
+        description: "Database management"
+
+  # Frontend-focused development
+  - name: "velocollab-frontend"
+    description: "⚡ Frontend development focused setup"
+    theme: "velocollab"
+    working_directory: "/Users/NGolde/workspace/NickTX/VeloCollab/frontend"
+    tabs:
+      - name: "⚡ Dev Server"
+        command: "npm start"
+        description: "React development server"
+
+      - name: "🧪 Tests"
+        command: "echo 'Ready to run: npm test'"
+        description: "Frontend testing"
+
+      - name: "🏗️ Build"
+        command: "echo 'Ready to run: npm run build'"
+        description: "Production builds"
+
+      - name: "📦 Packages"
+        command: "echo 'Package management - npm install, npm update'"
+        description: "Dependency management"
+
+  # Testing and QA setup
+  - name: "velocollab-testing"
+    description: "🧪 Testing and quality assurance setup"
+    theme: "velocollab"
+    working_directory: "/Users/NGolde/workspace/NickTX/VeloCollab"
+    tabs:
+      - name: "🧪 Full Test Suite"
+        command: "./dev-test.sh"
+        description: "Complete test suite"
+
+      - name: "🐍 Backend Tests"
+        command: "cd backend && source .venv/bin/activate && pytest tests -v --tb=short"
+        description: "Backend unit tests"
+
+      - name: "⚡ Frontend Tests"
+        command: "cd frontend && npm test -- --watchAll=false"
+        description: "Frontend component tests"
+
+      - name: "🔍 Code Quality"
+        command: "echo 'Code quality checks ready'"
+        description: "Linting and formatting"
+
+  # Deployment and operations
+  - name: "velocollab-deploy"
+    description: "🚀 Deployment and operations setup"
+    theme: "velocollab"
+    working_directory: "/Users/NGolde/workspace/NickTX/VeloCollab"
+    tabs:
+      - name: "🏗️ Build"
+        command: "echo '🏗️ Production build commands ready'"
+        description: "Production builds"
+
+      - name: "🐳 Docker"
+        command: "echo '🐳 Docker operations ready - docker-compose up'"
+        description: "Container management"
+
+      - name: "📊 Monitoring"
+        command: "echo '📊 Application monitoring and logs'"
+        description: "Health monitoring"
+
+      - name: "🔧 Utils"
+        command: "echo '🔧 Deployment utilities and scripts'"
+        description: "Deployment tools"
+
+  # Quick setup for new developers
+  - name: "velocollab-onboarding"
+    description: "👋 New developer onboarding setup"
+    theme: "velocollab"
+    working_directory: "/Users/NGolde/workspace/NickTX/VeloCollab"
+    tabs:
+      - name: "📋 Getting Started"
+        command: "clear && cat README.md | head -50"
+        description: "Project introduction"
+
+      - name: "🏗️ Setup"
+        command: ".warp/scripts/setup-dev.sh"
+        description: "Development environment setup"
+
+      - name: "📖 Documentation"
+        command: "echo '📖 Documentation links:' && echo '- README.md' && echo '- development_specs.md' && echo '- TODO.md'"
+        description: "Documentation access"
+
+      - name: "🎯 First Steps"
+        command: "echo '🎯 First steps:' && echo '1. Run setup script' && echo '2. Start backend server' && echo '3. Start frontend server' && echo '4. Run tests'"
+        description: "Guided first steps"
+
+# Environment variables for launch configurations
+environment:
+  # Development environment
+  ENVIRONMENT: "development"
+  DEBUG: "true"
+
+  # VeloCollab specific
+  VELOCOLLAB_ENV: "local"
+  VELOCOLLAB_LOG_LEVEL: "debug"
+
+  # API settings
+  API_HOST: "127.0.0.1"
+  API_PORT: "8000"
+  FRONTEND_PORT: "3000"
+
+# Default settings
+defaults:
+  theme: "velocollab"
+  shell: "zsh"
+  font_size: 14
+  working_directory: "/Users/NGolde/workspace/NickTX/VeloCollab"

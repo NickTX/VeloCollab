@@ -1,0 +1,158 @@
+---
+# VeloCollab Warp Workflows
+# Optimized development workflows for the fitness platform
+
+workflows:
+  # Development Environment Setup
+  - name: "setup-dev-environment"
+    command: ".warp/scripts/setup-dev.sh"
+    description: "🏗️ Set up complete development environment (backend + frontend)"
+    tags: ["setup", "development"]
+
+  - name: "install-dependencies"
+    command: ".warp/scripts/install-deps.sh"
+    description: "📦 Install all dependencies (Python + Node.js)"
+    tags: ["install", "dependencies"]
+
+  - name: "setup-warp-environment"
+    command: ".warp/scripts/setup-warp-only-env.sh"
+    description: "⚡ Configure Warp-ONLY environment (preserves other terminals)"
+    tags: ["setup", "warp", "environment"]
+
+  # Backend Development
+  - name: "start-backend"
+    command: "cd backend && source .venv/bin/activate && uvicorn src.app.main:app --reload --host 127.0.0.1 --port 8000"
+    description: "🚀 Start FastAPI backend development server"
+    tags: ["backend", "start"]
+
+  - name: "backend-shell"
+    command: "cd backend && source .venv/bin/activate && exec $SHELL"
+    description: "🐍 Open backend shell with virtual environment activated"
+    tags: ["backend", "shell"]
+
+  - name: "test-backend"
+    command: "cd backend && source .venv/bin/activate && pytest tests -v --tb=short"
+    description: "🧪 Run backend tests with verbose output"
+    tags: ["backend", "test"]
+
+  - name: "lint-backend"
+    command: "cd backend && source .venv/bin/activate && black src tests && ruff check src tests --fix"
+    description: "🔍 Lint and format backend code"
+    tags: ["backend", "lint"]
+
+  - name: "check-backend-health"
+    command: "curl -s http://localhost:8000/health | jq ."
+    description: "❤️ Check backend API health status"
+    tags: ["backend", "health"]
+
+  # Frontend Development
+  - name: "start-frontend"
+    command: "cd frontend && npm start"
+    description: "⚡ Start React development server"
+    tags: ["frontend", "start"]
+
+  - name: "build-frontend"
+    command: "cd frontend && npm run build"
+    description: "🏗️ Build frontend for production"
+    tags: ["frontend", "build"]
+
+  - name: "test-frontend"
+    command: "cd frontend && npm test -- --watchAll=false"
+    description: "🧪 Run frontend tests"
+    tags: ["frontend", "test"]
+
+  - name: "lint-frontend"
+    command: "cd frontend && npm run lint"
+    description: "🔍 Lint frontend code"
+    tags: ["frontend", "lint"]
+
+  # Full Stack Development
+  - name: "start-full-stack"
+    command: ".warp/scripts/start-full-stack.sh"
+    description: "🌟 Start both backend and frontend in parallel"
+    tags: ["fullstack", "start"]
+
+  - name: "test-all"
+    command: ".warp/scripts/test-all.sh"
+    description: "🧪 Run all tests (backend + frontend)"
+    tags: ["test", "all"]
+
+  - name: "dev-test-suite"
+    command: "./dev-test.sh"
+    description: "🚀 Run complete development test suite"
+    tags: ["test", "development"]
+
+  # Database & Migrations (for future use)
+  - name: "create-migration"
+    command: "cd backend && source .venv/bin/activate && alembic revision --autogenerate -m"
+    description: "📊 Create new database migration"
+    tags: ["database", "migration"]
+
+  - name: "run-migrations"
+    command: "cd backend && source .venv/bin/activate && alembic upgrade head"
+    description: "📊 Run pending database migrations"
+    tags: ["database", "migration"]
+
+  # Git & Development
+  - name: "git-status-all"
+    command: "git status && echo '\n📁 Backend:' && cd backend && git status && cd .. && echo '\n🌐 Frontend:' && cd frontend && git status"
+    description: "📋 Check git status for all components"
+    tags: ["git", "status"]
+
+  - name: "gh-workflow-list"
+    command: "GH_PAGER='' gh workflow list"
+    description: "📋 List GitHub Actions workflows"
+    tags: ["git", "github", "workflows"]
+
+  - name: "gh-workflow-runs"
+    command: "GH_PAGER='' gh run list --limit 10"
+    description: "📋 List recent workflow runs"
+    tags: ["git", "github", "runs"]
+
+  - name: "gh-pr-list"
+    command: "GH_PAGER='' gh pr list"
+    description: "📋 List pull requests"
+    tags: ["git", "github", "pr"]
+
+  - name: "commit-formatted"
+    command: ".warp/scripts/commit-with-format.sh"
+    description: "📝 Commit with conventional format"
+    tags: ["git", "commit"]
+
+  # Performance & Monitoring
+  - name: "profile-backend"
+    command: "cd backend && source .venv/bin/activate && python -m cProfile -o profile.stats -m uvicorn src.app.main:app --host 127.0.0.1 --port 8000"
+    description: "⚡ Profile backend performance"
+    tags: ["backend", "performance"]
+
+  - name: "analyze-frontend-bundle"
+    command: "cd frontend && npm run build && npx bundle-analyzer build/static/js/*.js"
+    description: "📊 Analyze frontend bundle size"
+    tags: ["frontend", "performance"]
+
+  # Docker & Deployment (for future use)
+  - name: "build-docker"
+    command: "docker-compose build"
+    description: "🐳 Build Docker containers"
+    tags: ["docker", "build"]
+
+  - name: "start-docker"
+    command: "docker-compose up -d"
+    description: "🐳 Start application in Docker"
+    tags: ["docker", "start"]
+
+  # Utility Commands
+  - name: "clean-all"
+    command: ".warp/scripts/clean-all.sh"
+    description: "🧹 Clean all build artifacts and caches"
+    tags: ["utility", "clean"]
+
+  - name: "update-deps"
+    command: ".warp/scripts/update-deps.sh"
+    description: "🔄 Update all dependencies"
+    tags: ["utility", "update"]
+
+  - name: "project-info"
+    command: ".warp/scripts/project-info.sh"
+    description: "ℹ️ Display project information and status"
+    tags: ["utility", "info"]
