@@ -1,71 +1,104 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AppProvider } from './contexts/AppContext';
+import Layout from './components/layout/Layout';
+import Home from './pages/Home';
+import Workouts from './pages/Workouts';
+import Exercises from './pages/Exercises';
+import Login from './pages/Login';
 import './App.css';
 
-interface ApiStatus {
-  api: string;
-  version: string;
-  environment: string;
-}
+// Placeholder components for routes that don't exist yet
+const Progress = () => (
+  <div className="text-center py-12">
+    <div className="text-4xl mb-4">📊</div>
+    <h2 className="text-2xl font-bold text-gray-900 mb-2">Progress Tracking</h2>
+    <p className="text-gray-600">This feature will be implemented in Phase 6.</p>
+  </div>
+);
+
+const History = () => (
+  <div className="text-center py-12">
+    <div className="text-4xl mb-4">📅</div>
+    <h2 className="text-2xl font-bold text-gray-900 mb-2">Workout History</h2>
+    <p className="text-gray-600">This feature will be implemented in Phase 6.</p>
+  </div>
+);
+
+const Goals = () => (
+  <div className="text-center py-12">
+    <div className="text-4xl mb-4">🎯</div>
+    <h2 className="text-2xl font-bold text-gray-900 mb-2">Goals & Targets</h2>
+    <p className="text-gray-600">This feature will be implemented in Phase 6.</p>
+  </div>
+);
+
+const Friends = () => (
+  <div className="text-center py-12">
+    <div className="text-4xl mb-4">👥</div>
+    <h2 className="text-2xl font-bold text-gray-900 mb-2">Friends & Social</h2>
+    <p className="text-gray-600">This feature will be implemented in Phase 6.</p>
+  </div>
+);
+
+const Leaderboard = () => (
+  <div className="text-center py-12">
+    <div className="text-4xl mb-4">🏆</div>
+    <h2 className="text-2xl font-bold text-gray-900 mb-2">Leaderboard</h2>
+    <p className="text-gray-600">This feature will be implemented in Phase 6.</p>
+  </div>
+);
+
+const Challenges = () => (
+  <div className="text-center py-12">
+    <div className="text-4xl mb-4">⚡</div>
+    <h2 className="text-2xl font-bold text-gray-900 mb-2">Challenges</h2>
+    <p className="text-gray-600">This feature will be implemented in Phase 6.</p>
+  </div>
+);
 
 function App() {
-  const [apiStatus, setApiStatus] = useState<ApiStatus | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchApiStatus = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/status');
-        setApiStatus(response.data);
-      } catch (err) {
-        setError('Failed to connect to API');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchApiStatus();
-  }, []);
-
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">VeloCollab MVP</h1>
+    <AppProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            {/* Login route (standalone) */}
+            <Route path="/login" element={<Login />} />
 
-        {loading && (
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-            <p className="text-gray-600">Connecting to API...</p>
-          </div>
-        )}
+            {/* Main app routes (with layout) */}
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="workouts" element={<Workouts />} />
+              <Route path="exercises" element={<Exercises />} />
+              <Route path="progress" element={<Progress />} />
+              <Route path="history" element={<History />} />
+              <Route path="goals" element={<Goals />} />
+              <Route path="friends" element={<Friends />} />
+              <Route path="leaderboard" element={<Leaderboard />} />
+              <Route path="challenges" element={<Challenges />} />
+            </Route>
 
-        {error && (
-          <div className="text-red-600 bg-red-100 p-4 rounded border border-red-300">
-            <h3 className="font-bold mb-2">❌ Connection Error</h3>
-            <p>{error}</p>
-            <p className="text-sm mt-2 text-gray-600">
-              Make sure the backend is running on http://localhost:8000
-            </p>
-          </div>
-        )}
-
-        {apiStatus && (
-          <div className="text-green-600 bg-green-100 p-4 rounded border border-green-300">
-            <h3 className="font-bold mb-2">✅ API Connected</h3>
-            <p><strong>Service:</strong> {apiStatus.api}</p>
-            <p><strong>Version:</strong> {apiStatus.version}</p>
-            <p><strong>Environment:</strong> {apiStatus.environment}</p>
-          </div>
-        )}
-
-        <div className="mt-6 text-center text-sm text-gray-500">
-          <p>Phase 1: Project Foundation Complete</p>
-          <p>Ready for Phase 2 development!</p>
+            {/* 404 fallback */}
+            <Route path="*" element={
+              <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🤔</div>
+                  <h1 className="text-2xl font-bold text-gray-900 mb-2">Page Not Found</h1>
+                  <p className="text-gray-600 mb-6">The page you're looking for doesn't exist.</p>
+                  <a
+                    href="/"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    🏠 Go Home
+                  </a>
+                </div>
+              </div>
+            } />
+          </Routes>
         </div>
-      </div>
-    </div>
+      </Router>
+    </AppProvider>
   );
 }
 
