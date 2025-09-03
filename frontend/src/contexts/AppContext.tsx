@@ -1,11 +1,15 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { ApiClient } from '../services/api';
+import {
+  User as ApiUser,
+  UserStats,
+  Exercise,
+  WorkoutSummary,
+  ApiState
+} from '../types/api';
 
-// Types
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
+// Enhanced User type that includes API data
+interface User extends ApiUser {
   isAuthenticated: boolean;
 }
 

@@ -1,45 +1,90 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
-interface ApiStatus {
-  api: string;
-  version: string;
-  environment: string;
-}
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUserData, useHealthCheck, useWorkouts } from '../hooks/useApi';
+import { LoadingState, ErrorMessage } from '../components/ui/LoadingSpinner';
+import { ApiHelpers } from '../services/api';
 
 const Home: React.FC = () => {
-  const [apiStatus, setApiStatus] = useState<ApiStatus | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { user, stats, isLoading: userLoading, error: userError, refetch: refetchUser } = useUserData();
+  const healthCheck = useHealthCheck();
+  const recentWorkouts = useWorkouts({ limit: 3 });
 
-  useEffect(() => {
-    const fetchApiStatus = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/status');
-        setApiStatus(response.data);
-      } catch (err) {
-        setError('Failed to connect to API');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchApiStatus();
+  // Check API health on component mount
+  React.useEffect(() => {
+    healthCheck.refetch();
   }, []);
 
-  const stats = [
-    { name: 'Total Workouts', value: '0', icon: '💪', color: 'bg-blue-500' },
-    { name: 'Exercises Completed', value: '0', icon: '🏋️', color: 'bg-green-500' },
-    { name: 'Hours Trained', value: '0', icon: '⏱️', color: 'bg-purple-500' },
-    { name: 'Calories Burned', value: '0', icon: '🔥', color: 'bg-red-500' },
+  // Show loading state while fetching user data
+  if (userLoading) {
+    return (
+      <div className="space-y-6">
+        <LoadingState message="Loading your dashboard..." />
+      </div>
+    );
+  }
+
+  // Show error state if user data fetch fails
+  if (userError) {
+    return (
+      <div className="space-y-6">
+        <ErrorMessage
+          title="Failed to load dashboard"
+          message={userError.message}
+          onRetry={() => refetchUser()}
+        />
+      </div>
+    );
+  }
+
+  // Build stats array from real user data
+  const statsData = [
+    {
+      name: 'Total Workouts',
+      value: stats?.totalWorkouts?.toString() || '0',
+      icon: '💪',
+      color: 'bg-blue-500'
+    },
+    {
+      name: 'Exercises Completed',
+      value: stats?.totalExercises?.toString() || '0',
+      icon: '🏋️',
+      color: 'bg-green-500'
+    },
+    {
+      name: 'Hours Trained',
+      value: stats?.totalMinutes ? Math.round(stats.totalMinutes / 60).toString() : '0',
+      icon: '⏱️',
+      color: 'bg-purple-500'
+    },
+    {
+      name: 'Calories Burned',
+      value: stats?.totalCalories?.toString() || '0',
+      icon: '🔥',
+      color: 'bg-red-500'
+    },
   ];
 
-  const recentActivities = [
-    { id: 1, activity: 'Welcome to VeloCollab!', time: 'Just now', icon: '🎉' },
-    { id: 2, activity: 'Account created successfully', time: '1 minute ago', icon: '✅' },
-    { id: 3, activity: 'Ready to start your fitness journey', time: '2 minutes ago', icon: '🚀' },
-  ];
+  // Build recent activities from workout data
+  const recentActivitiesData = [];
+
+  if (recentWorkouts.data && recentWorkouts.data.length > 0) {
+    recentWorkouts.data.forEach((workout) => {
+      recentActivitiesData.push({
+        id: workout.id,
+        activity: `Completed workout: ${workout.name}`,
+        time: new Date(workout.createdAt).toLocaleDateString(),
+        icon: '🏃'
+      });
+    });
+  } else {
+    // Default activities for new users
+    recentActivitiesData.push(
+      { id: 1, activity: 'Welcome to VeloCollab!', time: 'Just now', icon: '🎉' },
+      { id: 2, activity: 'Account created successfully', time: '1 minute ago', icon: '✅' },
+      { id: 3, activity: 'Ready to start your fitness journey', time: '2 minutes ago', icon: '🚀' }
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -54,7 +99,9 @@ const Home: React.FC = () => {
                 </div>
               </div>
               <div className="mt-4 sm:mt-0 sm:ml-4">
-                <h1 className="text-2xl font-bold text-gray-900">Welcome to VeloCollab!</h1>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Welcome{user?.firstName ? ` ${user.firstName}` : ''} to VeloCollab!
+                </h1>
                 <p className="mt-1 text-sm text-gray-600">
                   Your fitness collaboration platform is ready. Start tracking your workouts and connect with others!
                 </p>
@@ -69,14 +116,14 @@ const Home: React.FC = () => {
         <div className="px-4 py-5 sm:p-6">
           <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">System Status</h3>
 
-          {loading && (
+          {healthCheck.isLoading && (
             <div className="flex items-center space-x-2">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
               <span className="text-sm text-gray-600">Checking API connection...</span>
             </div>
           )}
 
-          {error && (
+          {healthCheck.error && (
             <div className="bg-red-50 border border-red-200 rounded-md p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
@@ -85,7 +132,7 @@ const Home: React.FC = () => {
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-red-800">Connection Error</h3>
                   <div className="mt-2 text-sm text-red-700">
-                    <p>{error}</p>
+                    <p>{ApiHelpers.getErrorMessage(healthCheck.error)}</p>
                     <p className="mt-1">Make sure the backend is running on http://localhost:8000</p>
                   </div>
                 </div>
@@ -93,7 +140,7 @@ const Home: React.FC = () => {
             </div>
           )}
 
-          {apiStatus && (
+          {healthCheck.data && (
             <div className="bg-green-50 border border-green-200 rounded-md p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
@@ -102,9 +149,9 @@ const Home: React.FC = () => {
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-green-800">API Connected</h3>
                   <div className="mt-2 text-sm text-green-700">
-                    <p><strong>Service:</strong> {apiStatus.api}</p>
-                    <p><strong>Version:</strong> {apiStatus.version}</p>
-                    <p><strong>Environment:</strong> {apiStatus.environment}</p>
+                    <p><strong>Service:</strong> {healthCheck.data.api}</p>
+                    <p><strong>Version:</strong> {healthCheck.data.version}</p>
+                    <p><strong>Environment:</strong> {healthCheck.data.environment}</p>
                   </div>
                 </div>
               </div>
@@ -115,7 +162,7 @@ const Home: React.FC = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
+        {statsData.map((stat) => (
           <div key={stat.name} className="bg-white overflow-hidden shadow rounded-lg">
             <div className="p-5">
               <div className="flex items-center">
@@ -141,38 +188,50 @@ const Home: React.FC = () => {
       {/* Recent Activity */}
       <div className="bg-white shadow rounded-lg">
         <div className="px-4 py-5 sm:p-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">Recent Activity</h3>
-          <div className="flow-root">
-            <ul className="-mb-8">
-              {recentActivities.map((activity, activityIdx) => (
-                <li key={activity.id}>
-                  <div className="relative pb-8">
-                    {activityIdx !== recentActivities.length - 1 ? (
-                      <span
-                        className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                        aria-hidden="true"
-                      />
-                    ) : null}
-                    <div className="relative flex space-x-3">
-                      <div>
-                        <span className="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white bg-gray-100">
-                          <span className="text-lg">{activity.icon}</span>
-                        </span>
-                      </div>
-                      <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg leading-6 font-medium text-gray-900">Recent Activity</h3>
+            {recentWorkouts.isLoading && (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+            )}
+          </div>
+
+          {recentWorkouts.error ? (
+            <div className="text-sm text-red-600">
+              Failed to load recent activities: {ApiHelpers.getErrorMessage(recentWorkouts.error)}
+            </div>
+          ) : (
+            <div className="flow-root">
+              <ul className="-mb-8">
+                {recentActivitiesData.map((activity, activityIdx) => (
+                  <li key={activity.id}>
+                    <div className="relative pb-8">
+                      {activityIdx !== recentActivitiesData.length - 1 ? (
+                        <span
+                          className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                      <div className="relative flex space-x-3">
                         <div>
-                          <p className="text-sm text-gray-500">{activity.activity}</p>
+                          <span className="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white bg-gray-100">
+                            <span className="text-lg">{activity.icon}</span>
+                          </span>
                         </div>
-                        <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                          <time>{activity.time}</time>
+                        <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                          <div>
+                            <p className="text-sm text-gray-500">{activity.activity}</p>
+                          </div>
+                          <div className="text-right text-sm whitespace-nowrap text-gray-500">
+                            <time>{activity.time}</time>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
