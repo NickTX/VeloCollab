@@ -39,10 +39,11 @@ apiClient.interceptors.response.use(
 
     // Handle HTTP error responses
     const { status, data } = error.response;
+    const errorData = data as any; // Type assertion for error response
 
     switch (status) {
       case 400:
-        throw new Error(data?.error || 'Bad request');
+        throw new Error(errorData?.error || 'Bad request');
       case 401:
         throw new Error('Authentication required');
       case 403:
@@ -54,7 +55,7 @@ apiClient.interceptors.response.use(
       case 503:
         throw new Error('Service unavailable - please try again later');
       default:
-        throw new Error(data?.error || `Request failed with status ${status}`);
+        throw new Error(errorData?.error || `Request failed with status ${status}`);
     }
   }
 );

@@ -15,7 +15,11 @@ def test_root():
     """Test root endpoint"""
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"message": "VeloCollab API is running!"}
+    data = response.json()
+    assert data["message"] == "VeloCollab API is running!"
+    assert data["version"] == "1.0.0"
+    assert data["docs"] == "/docs"
+    assert data["status"] == "healthy"
 
 
 def test_health():

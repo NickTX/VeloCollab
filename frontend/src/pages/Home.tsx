@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserData, useHealthCheck, useWorkouts } from '../hooks/useApi';
-import { LoadingState, ErrorMessage } from '../components/ui/LoadingSpinner';
+import { LoadingState } from '../components/ui/LoadingSpinner';
+import { ErrorMessage } from '../components/ui/ErrorMessage';
 import { ApiHelpers } from '../services/api';
 
 const Home: React.FC = () => {
@@ -30,7 +31,7 @@ const Home: React.FC = () => {
       <div className="space-y-6">
         <ErrorMessage
           title="Failed to load dashboard"
-          message={userError.message}
+          message={userError}
           onRetry={() => refetchUser()}
         />
       </div>
@@ -41,25 +42,25 @@ const Home: React.FC = () => {
   const statsData = [
     {
       name: 'Total Workouts',
-      value: stats?.totalWorkouts?.toString() || '0',
+      value: stats?.total_workouts?.toString() || '0',
       icon: '💪',
       color: 'bg-blue-500'
     },
     {
-      name: 'Exercises Completed',
-      value: stats?.totalExercises?.toString() || '0',
+      name: 'Current Streak',
+      value: stats?.current_streak?.toString() || '0',
       icon: '🏋️',
       color: 'bg-green-500'
     },
     {
       name: 'Hours Trained',
-      value: stats?.totalMinutes ? Math.round(stats.totalMinutes / 60).toString() : '0',
+      value: stats?.total_duration_hours?.toString() || '0',
       icon: '⏱️',
       color: 'bg-purple-500'
     },
     {
-      name: 'Calories Burned',
-      value: stats?.totalCalories?.toString() || '0',
+      name: 'Longest Streak',
+      value: stats?.longest_streak?.toString() || '0',
       icon: '🔥',
       color: 'bg-red-500'
     },
@@ -73,7 +74,7 @@ const Home: React.FC = () => {
       recentActivitiesData.push({
         id: workout.id,
         activity: `Completed workout: ${workout.name}`,
-        time: new Date(workout.createdAt).toLocaleDateString(),
+        time: new Date(workout.started_at).toLocaleDateString(),
         icon: '🏃'
       });
     });
@@ -100,7 +101,7 @@ const Home: React.FC = () => {
               </div>
               <div className="mt-4 sm:mt-0 sm:ml-4">
                 <h1 className="text-2xl font-bold text-gray-900">
-                  Welcome{user?.firstName ? ` ${user.firstName}` : ''} to VeloCollab!
+                  Welcome{user?.name ? ` ${user.name}` : ''} to VeloCollab!
                 </h1>
                 <p className="mt-1 text-sm text-gray-600">
                   Your fitness collaboration platform is ready. Start tracking your workouts and connect with others!
@@ -132,7 +133,7 @@ const Home: React.FC = () => {
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-red-800">Connection Error</h3>
                   <div className="mt-2 text-sm text-red-700">
-                    <p>{ApiHelpers.getErrorMessage(healthCheck.error)}</p>
+                    <p>{healthCheck.error}</p>
                     <p className="mt-1">Make sure the backend is running on http://localhost:8000</p>
                   </div>
                 </div>
@@ -149,9 +150,9 @@ const Home: React.FC = () => {
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-green-800">API Connected</h3>
                   <div className="mt-2 text-sm text-green-700">
-                    <p><strong>Service:</strong> {healthCheck.data.api}</p>
+                    <p><strong>Status:</strong> {healthCheck.data.status}</p>
                     <p><strong>Version:</strong> {healthCheck.data.version}</p>
-                    <p><strong>Environment:</strong> {healthCheck.data.environment}</p>
+                    <p><strong>Updated:</strong> {healthCheck.data.timestamp ? new Date(healthCheck.data.timestamp).toLocaleString() : 'Unknown'}</p>
                   </div>
                 </div>
               </div>
@@ -197,7 +198,7 @@ const Home: React.FC = () => {
 
           {recentWorkouts.error ? (
             <div className="text-sm text-red-600">
-              Failed to load recent activities: {ApiHelpers.getErrorMessage(recentWorkouts.error)}
+              Failed to load recent activities: {recentWorkouts.error}
             </div>
           ) : (
             <div className="flow-root">
