@@ -1,12 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useUserData, useHealthCheck, useWorkouts } from '../hooks/useApi';
 import { LoadingState } from '../components/ui/LoadingSpinner';
 import { ErrorMessage } from '../components/ui/ErrorMessage';
-import { ApiHelpers } from '../services/api';
 
 const Home: React.FC = () => {
-  const navigate = useNavigate();
   const { user, stats, isLoading: userLoading, error: userError, refetch: refetchUser } = useUserData();
   const healthCheck = useHealthCheck();
   const recentWorkouts = useWorkouts({ limit: 3 });
@@ -14,7 +11,7 @@ const Home: React.FC = () => {
   // Check API health on component mount
   React.useEffect(() => {
     healthCheck.refetch();
-  }, []);
+  }, [healthCheck]);
 
   // Show loading state while fetching user data
   if (userLoading) {

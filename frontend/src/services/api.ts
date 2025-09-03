@@ -9,7 +9,6 @@ import {
   WorkoutResponse,
   WorkoutCreate,
   WorkoutFilters,
-  ErrorResponse,
   ApiEndpoints
 } from '../types/api';
 
@@ -160,7 +159,8 @@ export const useApiCall = <T>(
     } finally {
       setLoading(false);
     }
-  }, dependencies);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiFunction]);
 
   React.useEffect(() => {
     fetchData();

@@ -1,11 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ApiClient } from '../services/api';
 import {
-  User,
-  UserStats,
-  Exercise,
   ExerciseFilters,
-  WorkoutSummary,
   WorkoutResponse,
   WorkoutFilters,
   WorkoutCreate,
@@ -66,7 +62,8 @@ export function useApiCall<T>(
     if (immediate) {
       fetchData();
     }
-  }, [immediate, fetchData, ...dependencies]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [immediate, fetchData]);
 
   return {
     data,
@@ -241,6 +238,6 @@ export function useUserData() {
     error: userQuery.error || statsQuery.error,
     refetch: useCallback(async () => {
       await Promise.all([userQuery.refetch(), statsQuery.refetch()]);
-    }, [userQuery.refetch, statsQuery.refetch])
+    }, [userQuery, statsQuery])
   };
 }
